@@ -20,7 +20,7 @@ Rules: update only your own section. Status is one of Not started, In progress o
 
 ## Shared
 
-- [ ] requirements.txt. Owner: not assigned yet. Status: Not started
+- [x] requirements.txt with Phase 1 packages. Owner: A. Status: Done
 - [x] Commit src/extract_lines.py. Owner: A. Status: Done
 - [ ] Share data/raw/credata_raw_extract.csv with the other person privately. Owner: A. Status: Not started
 - [ ] Every notebook run from top to bottom before the final commit. Owner: each notebook's owner. Status: Not started
