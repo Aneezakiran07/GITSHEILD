@@ -15,6 +15,7 @@ Rules: never delete another person's entry, append rows only in your own section
 | 2026-11-05 | One owner per notebook, one branch per person, pull with rebase before pushing, and pull requests reviewed by the other person. | This avoids notebook merge conflicts and gives every change a second reader. | A |
 | 2026-11-05 | Keep data/raw/credata_raw_extract.csv out of git and share it privately. This replaces the earlier data/raw decision. | GitHub push protection rejected a push containing the extract, and any cleaned file made from it would contain the same lines. src/extract_lines.py is the script that makes it. | A |
 | 2026-11-05 | Pin requirements.txt to the versions installed on the machine used so far, with Phase 1 packages only. | Both people get the same results. XGBoost and SHAP are added when Phase 2 starts. | A |
+| 2026-11-05 | The cleaned data is data/processed/credata_clean.csv in the format set out in docs/CLEANED_DATA.md, and it stays out of git. | 02_eda and src/features.py depend on 01_cleaning, and the file holds the same lines push protection rejected. Column names match the raw extract so code can move from one to the other. | A |
 
 ## Person B
 

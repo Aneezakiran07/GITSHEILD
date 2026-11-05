@@ -43,6 +43,9 @@ Format: `- YYYY-MM-DD | fact | source: notebook, command output or document | A 
 - 2026-11-05 | LineText contains text shaped like real credentials: 1,271 rows match a private key header, 390 an AWS key id, 22 a Google API key, 10 a Slack token and 1 a GitHub token. These are regex counts and the values should be look alikes, but GitHub push protection may still block a push that contains them. | source: regex count on the extract | A
 - 2026-11-05 | The GitHub repository is public, because the API answers without a login. | source: GitHub API status 200 for Aneezakiran07/GITSHEILD | A
 - 2026-11-05 | GitHub push protection rejected a push containing the extract. It flagged AWS access key ids and a Grafana service account token, and reported 18 more detections. | source: git push output | A
+- 2026-11-05 | Id is unique in the extract, across all 67,896 rows, and is never empty. | source: pandas count on the extract | A
+- 2026-11-05 | 4 Value cells contain text such as NA that pandas reads as missing by default. A default read also turns the 667 empty LineText cells into NaN. | source: pandas read of the extract with and without keep_default_na=False | A
+- 2026-11-05 | 23 RepoName values and 406 FileID values contain only digits or a number in e notation, so they could be read as numbers. | source: regex count on the distinct values in the extract | A
 
 ## Person B
 

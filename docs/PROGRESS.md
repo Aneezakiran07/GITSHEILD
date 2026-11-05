@@ -26,6 +26,7 @@ Rules: update only your own section. Status is one of Not started, In progress o
 - [ ] Every notebook run from top to bottom before the final commit. Owner: each notebook's owner. Status: Not started
 - [ ] Add the instructor Rebelhere as a collaborator if the repo becomes private. The repo is public now. Owner: not assigned yet. Status: Not started
 - [x] docs folder. Owner: A. Status: Done
+- [x] Cleaned data format in docs/CLEANED_DATA.md. Owner: A. Status: Done
 
 ## Open questions
 

@@ -1,2 +1,5 @@
 # Raw data stays local because GitHub push protection rejects the extract
 data/raw/
+
+# Cleaned data holds the same lines, so the notebook makes it instead
+data/processed/
