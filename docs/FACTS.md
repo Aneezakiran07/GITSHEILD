@@ -50,6 +50,7 @@ Format: `- YYYY-MM-DD | fact | source: notebook, command output or document | A 
 - 2026-11-08 | Counting offsets in UTF 8 bytes explains none of the 212 rows, and extra line break characters such as form feed or the Unicode line separator do not appear in the suspect files. | source: notebooks/01_cleaning.ipynb | A
 - 2026-11-08 | 78 FileID values appear in more than one repository, always at the same path inside each repository. 1,602 rows use them. | source: notebooks/01_cleaning.ipynb | A
 - 2026-11-08 | All 557 rows with Found equal to 0, and 264 of the 267 suspect rows, use a shared FileID. This corrects the earlier entry that guessed the cause was unverified. src/extract_lines.py finds a file by FileID alone, so labels for a shared FileID were read from only one repository's copy. | source: notebooks/01_cleaning.ipynb and src/extract_lines.py | A
+- 2026-11-08 | On a small test set where two repos share a FileID, the old src/extract_lines.py read the first repo's label from the second repo's copy of the file. The fixed script reads each repo's own copy. | source: old and new src/extract_lines.py run on a test set | A
 
 ## Person B
 

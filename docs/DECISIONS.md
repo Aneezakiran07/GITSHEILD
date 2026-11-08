@@ -17,6 +17,7 @@ Rules: never delete another person's entry, append rows only in your own section
 | 2026-11-05 | Pin requirements.txt to the versions installed on the machine used so far, with Phase 1 packages only. | Both people get the same results. XGBoost and SHAP are added when Phase 2 starts. | A |
 | 2026-11-05 | The cleaned data is data/processed/credata_clean.csv in the format set out in docs/CLEANED_DATA.md, and it stays out of git. | 02_eda and src/features.py depend on 01_cleaning, and the file holds the same lines push protection rejected. Column names match the raw extract so code can move from one to the other. | A |
 | 2026-11-08 | Notebook outputs show counts and offsets only, never LineText or Value. | Notebooks are tracked by git, and GitHub push protection rejects pushes containing the look alike secrets. | A |
+| 2026-11-08 | src/extract_lines.py finds each file by its repository folder and FileID together, and prints how many pairs it found more than once. | 78 FileID values appear in more than one repository, and finding files by FileID alone read labels from the wrong copy. | A |
 
 ## Person B
 

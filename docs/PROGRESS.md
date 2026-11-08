@@ -7,7 +7,7 @@ Rules: update only your own section. Status is one of Not started, In progress o
 ## Person A
 
 - [ ] notebooks/01_cleaning: missing values, duplicates, outliers, inconsistent formats. Owner: A. Status: In progress
-- [ ] Fix src/extract_lines.py to find files by repository and FileID, then make the extract again in the Linux VM. Owner: A. Status: Not started
+- [ ] Fix src/extract_lines.py to find files by repository and FileID, then make the extract again in the Linux VM. Owner: A. Status: In progress
 - [ ] Cleaned dataset or a script that makes it. Owner: A. Status: Not started
 - [ ] notebooks/03_preprocessing: normalization or scaling. Owner: A. Status: Not started
 
