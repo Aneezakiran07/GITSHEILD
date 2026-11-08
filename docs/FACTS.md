@@ -51,6 +51,15 @@ Format: `- YYYY-MM-DD | fact | source: notebook, command output or document | A 
 - 2026-11-08 | 78 FileID values appear in more than one repository, always at the same path inside each repository. 1,602 rows use them. | source: notebooks/01_cleaning.ipynb | A
 - 2026-11-08 | All 557 rows with Found equal to 0, and 264 of the 267 suspect rows, use a shared FileID. This corrects the earlier entry that guessed the cause was unverified. src/extract_lines.py finds a file by FileID alone, so labels for a shared FileID were read from only one repository's copy. | source: notebooks/01_cleaning.ipynb and src/extract_lines.py | A
 - 2026-11-08 | On a small test set where two repos share a FileID, the old src/extract_lines.py read the first repo's label from the second repo's copy of the file. The fixed script reads each repo's own copy. | source: old and new src/extract_lines.py run on a test set | A
+- 2026-11-08 | Dropping rows that use a shared FileID removes 1,602 rows (F 1,137, T 283, X 182) and leaves 66,294 rows in 335 of 337 repositories. Every remaining row has Found equal to 1. | source: notebooks/01_cleaning.ipynb | A
+- 2026-11-08 | After that, 3 single line rows still have a value past the end of the line and no row points at a blank line. Dropping the 3 leaves 66,291 rows. | source: notebooks/01_cleaning.ipynb | A
+- 2026-11-08 | Empty cells in the kept rows: ValueStart 32,692, ValueEnd 32,893, Value 33,176, CryptographyKey 65,237, PredefinedPattern 65,614 and FileExt 1,056. No other column has empty cells. | source: notebooks/01_cleaning.ipynb | A
+- 2026-11-08 | Id, LineStart, LineEnd, ValueStart and ValueEnd hold only whole numbers. Domain has Github on 38 rows next to GitHub on the rest. FileExt has no upper case letters and Category has no empty parts. | source: notebooks/01_cleaning.ipynb | A
+- 2026-11-08 | ValueEnd is before ValueStart on 10 rows, all multi line. ValueEnd equals ValueStart on 15 rows, and 201 rows have a ValueStart but no ValueEnd. | source: notebooks/01_cleaning.ipynb | A
+- 2026-11-08 | There are no exact duplicate rows and no line labeled twice with the same offsets. 4,945 rows share a line with another label, across 1,875 lines, and the labels disagree on 339 of those lines. | source: notebooks/01_cleaning.ipynb | A
+- 2026-11-08 | 319 line texts appear in more than one repository, covering 1,420 rows, and 407 line texts have more than one label, covering 1,161 rows. | source: notebooks/01_cleaning.ipynb | A
+- 2026-11-08 | Some PredefinedPattern notes such as example, fake-for-test-but-valid and let-it-be-true describe the label itself. | source: pandas count on the kept rows | A
+- 2026-11-08 | The cleaned file has 66,291 rows: label 1 on 15,470 (23.34 percent) and label 0 on 50,821. It reads back unchanged with the agreed read settings. | source: notebooks/01_cleaning.ipynb | A
 
 ## Person B
 

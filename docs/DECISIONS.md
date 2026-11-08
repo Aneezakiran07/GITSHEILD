@@ -18,6 +18,13 @@ Rules: never delete another person's entry, append rows only in your own section
 | 2026-11-05 | The cleaned data is data/processed/credata_clean.csv in the format set out in docs/CLEANED_DATA.md, and it stays out of git. | 02_eda and src/features.py depend on 01_cleaning, and the file holds the same lines push protection rejected. Column names match the raw extract so code can move from one to the other. | A |
 | 2026-11-08 | Notebook outputs show counts and offsets only, never LineText or Value. | Notebooks are tracked by git, and GitHub push protection rejects pushes containing the look alike secrets. | A |
 | 2026-11-08 | src/extract_lines.py finds each file by its repository folder and FileID together, and prints how many pairs it found more than once. | 78 FileID values appear in more than one repository, and finding files by FileID alone read labels from the wrong copy. | A |
+| 2026-11-08 | Drop all 1,602 rows that use a shared FileID instead of making the extract again in the Linux VM. This covers the earlier rule to drop rows where Found is 0, because all 557 of those are among them. | It costs 2.36 percent of rows and lets both people keep the same extract before the Phase 1 deadline. The fixed script can bring the rows back before Phase 2. | A |
+| 2026-11-08 | Drop the 3 remaining single line rows whose value ends past the line. | Their labels cannot be checked against the text. | A |
+| 2026-11-08 | Do not fill empty cells. | Every empty cell has a meaning, such as the whole line marked or a file with no extension, and a placeholder would hide it. | A |
+| 2026-11-08 | Change Domain value Github to GitHub. | It is the only inconsistent spelling found, on 38 rows. | A |
+| 2026-11-08 | Leave CryptographyKey and PredefinedPattern as they are and keep them out of model features. | They are sparse annotator notes, and some describe the label itself, which would leak it. | A |
+| 2026-11-08 | Drop no rows as duplicates. Keep every label on a shared line and every repeated line text, and check text overlap between train and test in 03_preprocessing. | There are no exact or same offset duplicates. Labels on a shared line mark different values, and repeated texts are separate labels in separate files. | A |
+| 2026-11-08 | Write the cleaned file with LF line endings. | It matches the raw extract and is the same file on Windows and Linux. | A |
 
 ## Person B
 
