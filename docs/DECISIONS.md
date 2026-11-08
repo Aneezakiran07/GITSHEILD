@@ -25,6 +25,9 @@ Rules: never delete another person's entry, append rows only in your own section
 | 2026-11-08 | Leave CryptographyKey and PredefinedPattern as they are and keep them out of model features. | They are sparse annotator notes, and some describe the label itself, which would leak it. | A |
 | 2026-11-08 | Drop no rows as duplicates. Keep every label on a shared line and every repeated line text, and check text overlap between train and test in 03_preprocessing. | There are no exact or same offset duplicates. Labels on a shared line mark different values, and repeated texts are separate labels in separate files. | A |
 | 2026-11-08 | Write the cleaned file with LF line endings. | It matches the raw extract and is the same file on Windows and Linux. | A |
+| 2026-11-08 | Keep every outlier and do not cap any value. Apply a log transform to length and position measures in 03_preprocessing before scaling. | The extreme values are real code such as bundled files, none is an error, and the long values and multi line labels are mostly real secrets. | A |
+| 2026-11-08 | In 03_preprocessing, check that train and test have similar sizes and label shares after the split by repository. | A few repositories hold a large share of rows, and the largest has twice the overall share of real secrets. | A |
+| 2026-11-08 | Keep rare file extensions as they are in the cleaned data and leave grouping them to src/features.py. | Grouping is a feature choice, and the cleaned data should keep the original values. | A |
 
 ## Person B
 

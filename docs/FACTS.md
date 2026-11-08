@@ -60,6 +60,12 @@ Format: `- YYYY-MM-DD | fact | source: notebook, command output or document | A 
 - 2026-11-08 | 319 line texts appear in more than one repository, covering 1,420 rows, and 407 line texts have more than one label, covering 1,161 rows. | source: notebooks/01_cleaning.ipynb | A
 - 2026-11-08 | Some PredefinedPattern notes such as example, fake-for-test-but-valid and let-it-be-true describe the label itself. | source: pandas count on the kept rows | A
 - 2026-11-08 | The cleaned file has 66,291 rows: label 1 on 15,470 (23.34 percent) and label 0 on 50,821. It reads back unchanged with the agreed read settings. | source: notebooks/01_cleaning.ipynb | A
+- 2026-11-08 | Line length, value length, line number and lines spanned are all strongly skewed. Line length has a median of 58 characters and a maximum of 711,242. Line number has a median of 255 and a maximum of 917,380. | source: notebooks/01_cleaning.ipynb | A
+- 2026-11-08 | Rows above the box plot fence (third quartile plus 1.5 times the interquartile range): line length 9,995 rows (15.08 percent), value length 1,481 (4.47 percent of rows with a value), line number 11,793 (17.79 percent) and lines spanned 1,347 (2.03 percent). Real secrets are 64.7 percent of the rows above the fence for value length and 94.4 percent for lines spanned, against 23.3 percent overall. | source: notebooks/01_cleaning.ipynb | A
+- 2026-11-08 | 247 rows have a line longer than 10,000 characters, in 20 repositories, mostly txt, js and json files. No value is longer than its line. | source: notebooks/01_cleaning.ipynb | A
+- 2026-11-08 | The largest repository holds 15.4 percent of rows and 50.6 percent of its rows are real secrets. The 5 largest hold 33.32 percent. The median repository has 69 rows. | source: notebooks/01_cleaning.ipynb | A
+- 2026-11-08 | There are 219 file extensions, and 98 of them have fewer than 10 rows, covering 282 rows. | source: notebooks/01_cleaning.ipynb | A
+- 2026-11-08 | Cleaning removes 1,605 of 67,896 rows (2.36 percent): 1,602 for shared FileID values and 3 for values past the line. | source: notebooks/01_cleaning.ipynb | A
 
 ## Person B
 
