@@ -68,6 +68,7 @@ Format: `- YYYY-MM-DD | fact | source: notebook, command output or document | A 
 - 2026-11-08 | Cleaning removes 1,605 of 67,896 rows (2.36 percent): 1,602 for shared FileID values and 3 for values past the line. | source: notebooks/01_cleaning.ipynb | A
 - 2026-11-09 | The old VAR_NAME pattern in src/features.py took time that grows with the square of the run length on long runs of name characters: 17 seconds for 20,000 characters and 33 seconds for 40,000. build_features did not finish on the cleaned file within 10 minutes. | source: timing runs of re.search and build_features | A
 - 2026-11-09 | The new VAR_NAME pattern finds the same name as the old one on all 66,044 cleaned rows with lines up to 10,000 characters, and runs on all 66,291 rows in 0.1 seconds. | source: comparison of str.extract with both patterns | A
+- 2026-11-09 | Correction to the two entries above: the 10 minute run was stuck on another command and never reached build_features. The old pattern finishes on all 247 cleaned rows with lines over 10,000 characters in under 0.1 seconds, and build_features with the old pattern takes 1.9 seconds on the whole cleaned file, giving 66,291 rows and 39 columns. The slow case only appears on long made up runs of name characters, so the old pattern is kept. | source: timing run of the old pattern and of build_features | A
 
 ## Person B
 
