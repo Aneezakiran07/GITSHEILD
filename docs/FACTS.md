@@ -77,6 +77,7 @@ Format: `- YYYY-MM-DD | fact | source: notebook, command output or document | A 
 - 2026-11-09 | The most common value length in train is 36 characters, on 5,464 rows, followed by 32, 64 and 48. | source: pandas count on the train rows | A
 - 2026-11-09 | Min max scaling of raw line_len on the train set puts the median at 0.00007 and 99.44 percent of train rows below 0.01. | source: notebooks/03_preprocessing.ipynb | A
 - 2026-11-09 | After the log transform and a StandardScaler fitted on train, test means range from minus 0.322 (line_number) to 0.379 (path_depth) and test standard deviations from 0.695 (line_number) to 1.424 (path_depth). | source: notebooks/03_preprocessing.ipynb | A
+- 2026-11-09 | 03_preprocessing writes features_train.csv (53,056 rows, 43 columns), features_test.csv (13,235 rows, 43 columns), repo_split.csv (335 repositories) and scaler_params.csv to data/processed. No Id is in both feature files and together they cover all 66,291 cleaned rows. | source: notebooks/03_preprocessing.ipynb | A
 
 ## Person B
 
