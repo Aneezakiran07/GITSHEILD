@@ -75,6 +75,8 @@ Format: `- YYYY-MM-DD | fact | source: notebook, command output or document | A 
 - 2026-11-09 | After the split, 98 distinct line texts appear in both train and test, on 360 train rows and 148 test rows (1.12 percent of test rows). None of those 148 test rows has label 1. | source: notebooks/03_preprocessing.ipynb | A
 - 2026-11-09 | Skew on the train set before and after log1p: value_len 33.94 to 0.34, line_len 66.12 to 1.80, line_number 8.56 to 0.51, lines_spanned 14.86 to 8.60 and var_name_len 3.10 to minus 0.57. lines_spanned stays skewed because 97.74 percent of train rows span one line. | source: notebooks/03_preprocessing.ipynb and a pandas count on the train rows | A
 - 2026-11-09 | The most common value length in train is 36 characters, on 5,464 rows, followed by 32, 64 and 48. | source: pandas count on the train rows | A
+- 2026-11-09 | Min max scaling of raw line_len on the train set puts the median at 0.00007 and 99.44 percent of train rows below 0.01. | source: notebooks/03_preprocessing.ipynb | A
+- 2026-11-09 | After the log transform and a StandardScaler fitted on train, test means range from minus 0.322 (line_number) to 0.379 (path_depth) and test standard deviations from 0.695 (line_number) to 1.424 (path_depth). | source: notebooks/03_preprocessing.ipynb | A
 
 ## Person B
 

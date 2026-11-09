@@ -31,6 +31,7 @@ Rules: never delete another person's entry, append rows only in your own section
 | 2026-11-09 | Split by RepoId with GroupShuffleSplit at test_size 0.2, trying seeds 0 to 199 and keeping the one whose test set is closest to 20 percent of rows and to the overall label 1 share. The chosen seed is 65. | Test size ranges from 8.94 to 44.39 percent of rows across seeds. The rule uses only sizes and label shares, never feature values. | A |
 | 2026-11-09 | Keep test rows whose line text also appears in train, and suggest Phase 2 reports test scores with and without them. | They are 1.12 percent of test rows and all have label 0, so they cannot make finding real secrets look easier. | A |
 | 2026-11-09 | Apply log1p to value_len, line_len, line_number, lines_spanned and var_name_len. Leave the ratios, value_entropy and path_depth untransformed. | These are the length and position measures, and log1p cuts their skew sharply. The ratios already lie between 0 and 1 and log1p changes their skew little. | A |
+| 2026-11-09 | Scale the 11 numeric features with StandardScaler fitted on the train set only, after the log transform. Leave the 28 flags as 0 and 1. | Min max scaling lets one long line push 99.44 percent of train rows below 0.01. Flags are already on a common scale. Logistic regression needs scaled inputs and the tree models are not affected, so one table serves all three. | A |
 
 ## Person B
 
