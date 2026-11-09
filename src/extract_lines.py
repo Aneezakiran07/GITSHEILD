@@ -8,13 +8,20 @@ import pandas as pd
 
 
 def build_file_index(data_dir):
-    # maps each file id to its path on disk so we never depend on the path format in the labels
+    # maps each repo and file id pair to its path on disk because the same file id can appear in several repos
     index = {}
+    clashes = 0
     for dirpath, _, filenames in os.walk(data_dir):
+        relative = os.path.relpath(dirpath, data_dir)
+        if relative == ".":
+            continue
+        repo_id = relative.split(os.sep)[0]
         for name in filenames:
-            stem = name.split(".")[0]
-            index[stem] = os.path.join(dirpath, name)
-    return index
+            key = (repo_id, name.split(".")[0])
+            if key in index:
+                clashes += 1
+            index[key] = os.path.join(dirpath, name)
+    return index, clashes
 
 
 def read_lines(path, cache):
@@ -46,8 +53,9 @@ def main():
     if not meta_files:
         sys.exit("no meta csv files found under " + args.root)
 
-    index = build_file_index(os.path.join(args.root, "data"))
+    index, clashes = build_file_index(os.path.join(args.root, "data"))
     print("files found on disk:", len(index))
+    print("repo and file id pairs found more than once:", clashes)
 
     rows = []
     missing_files = 0
@@ -56,7 +64,7 @@ def main():
         meta = pd.read_csv(meta_path, dtype=str, keep_default_na=False)
         cache = {}
         for rec in meta.to_dict("records"):
-            path = index.get(rec.get("FileID", ""))
+            path = index.get((repo_id, rec.get("FileID", "")))
             line_start = to_int(rec.get("LineStart"))
             line_end = to_int(rec.get("LineEnd")) or line_start
             line_text = ""

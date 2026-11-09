@@ -20,7 +20,7 @@ Use these read settings for the raw extract too. Without keep_default_na=False, 
 
 ## Rows
 
-Each row is one labeled line. Id is the row key and is unique. Rows where Found is 0 are removed. The other removal rules follow the open questions in docs/PROGRESS.md and will be recorded in docs/DECISIONS.md.
+Each row is one labeled line. Id is the row key and is unique. Rows where Found is 0 are removed, along with every row that uses a FileID shared by several repositories. The other removal rules follow the open questions in docs/PROGRESS.md and will be recorded in docs/DECISIONS.md.
 
 ## Columns
 
