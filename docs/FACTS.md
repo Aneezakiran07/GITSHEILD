@@ -73,6 +73,8 @@ Format: `- YYYY-MM-DD | fact | source: notebook, command output or document | A 
 - 2026-11-09 | With GroupShuffleSplit at test_size 0.2 over seeds 0 to 199, the test set holds from 8.94 to 44.39 percent of rows, because it picks 20 percent of repositories and repository sizes differ a lot. | source: notebooks/03_preprocessing.ipynb | A
 - 2026-11-09 | Seed 65 gives train 268 repositories and 53,056 rows (80.03 percent, label 1 23.36 percent) and test 67 repositories and 13,235 rows (19.97 percent, label 1 23.26 percent). No repository is in both, and the largest repository is in train. X is 10.36 percent of test rows against 4.76 percent of train rows. | source: notebooks/03_preprocessing.ipynb | A
 - 2026-11-09 | After the split, 98 distinct line texts appear in both train and test, on 360 train rows and 148 test rows (1.12 percent of test rows). None of those 148 test rows has label 1. | source: notebooks/03_preprocessing.ipynb | A
+- 2026-11-09 | Skew on the train set before and after log1p: value_len 33.94 to 0.34, line_len 66.12 to 1.80, line_number 8.56 to 0.51, lines_spanned 14.86 to 8.60 and var_name_len 3.10 to minus 0.57. lines_spanned stays skewed because 97.74 percent of train rows span one line. | source: notebooks/03_preprocessing.ipynb and a pandas count on the train rows | A
+- 2026-11-09 | The most common value length in train is 36 characters, on 5,464 rows, followed by 32, 64 and 48. | source: pandas count on the train rows | A
 
 ## Person B
 
