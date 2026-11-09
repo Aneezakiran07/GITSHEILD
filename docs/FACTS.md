@@ -66,6 +66,8 @@ Format: `- YYYY-MM-DD | fact | source: notebook, command output or document | A 
 - 2026-11-08 | The largest repository holds 15.4 percent of rows and 50.6 percent of its rows are real secrets. The 5 largest hold 33.32 percent. The median repository has 69 rows. | source: notebooks/01_cleaning.ipynb | A
 - 2026-11-08 | There are 219 file extensions, and 98 of them have fewer than 10 rows, covering 282 rows. | source: notebooks/01_cleaning.ipynb | A
 - 2026-11-08 | Cleaning removes 1,605 of 67,896 rows (2.36 percent): 1,602 for shared FileID values and 3 for values past the line. | source: notebooks/01_cleaning.ipynb | A
+- 2026-11-09 | The old VAR_NAME pattern in src/features.py took time that grows with the square of the run length on long runs of name characters: 17 seconds for 20,000 characters and 33 seconds for 40,000. build_features did not finish on the cleaned file within 10 minutes. | source: timing runs of re.search and build_features | A
+- 2026-11-09 | The new VAR_NAME pattern finds the same name as the old one on all 66,044 cleaned rows with lines up to 10,000 characters, and runs on all 66,291 rows in 0.1 seconds. | source: comparison of str.extract with both patterns | A
 
 ## Person B
 

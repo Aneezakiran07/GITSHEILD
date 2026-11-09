@@ -38,7 +38,9 @@ EXT_GROUPS = {
 }
 
 # The first name before an equals sign or a colon, such as db_password in db_password = "..."
-VAR_NAME = r"([A-Za-z_][A-Za-z0-9_.\-]*)[\"']?\s*(?::=|=>|=|:)"
+# Each try starts at the beginning of a run of name characters and never backs up inside it
+# Without this a line of 711,242 characters takes hours, and the names found are the same
+VAR_NAME = r"(?<![A-Za-z0-9_.\-])[0-9.\-]*+([A-Za-z_][A-Za-z0-9_.\-]*+)[\"']?\s*(?::=|=>|=|:)"
 
 
 def load_data(path=None, drop_shared_ids=False):
