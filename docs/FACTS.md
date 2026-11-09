@@ -69,6 +69,7 @@ Format: `- YYYY-MM-DD | fact | source: notebook, command output or document | A 
 - 2026-11-09 | The old VAR_NAME pattern in src/features.py took time that grows with the square of the run length on long runs of name characters: 17 seconds for 20,000 characters and 33 seconds for 40,000. build_features did not finish on the cleaned file within 10 minutes. | source: timing runs of re.search and build_features | A
 - 2026-11-09 | The new VAR_NAME pattern finds the same name as the old one on all 66,044 cleaned rows with lines up to 10,000 characters, and runs on all 66,291 rows in 0.1 seconds. | source: comparison of str.extract with both patterns | A
 - 2026-11-09 | Correction to the two entries above: the 10 minute run was stuck on another command and never reached build_features. The old pattern finishes on all 247 cleaned rows with lines over 10,000 characters in under 0.1 seconds, and build_features with the old pattern takes 1.9 seconds on the whole cleaned file, giving 66,291 rows and 39 columns. The slow case only appears on long made up runs of name characters, so the old pattern is kept. | source: timing run of the old pattern and of build_features | A
+- 2026-11-09 | build_features on the cleaned file gives 39 feature columns with no missing values: 28 flags that only hold 0 and 1, and 11 numeric features (value_len, value_entropy, four value ratios, line_len, line_number, lines_spanned, var_name_len and path_depth). | source: notebooks/03_preprocessing.ipynb | A
 
 ## Person B
 
