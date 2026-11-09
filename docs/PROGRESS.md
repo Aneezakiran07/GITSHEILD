@@ -7,9 +7,11 @@ Rules: update only your own section. Status is one of Not started, In progress o
 ## Person A
 
 - [x] notebooks/01_cleaning: missing values, duplicates, outliers, inconsistent formats. Owner: A. Status: Done
-- [ ] Fix src/extract_lines.py to find files by repository and FileID, then make the extract again in the Linux VM. Owner: A. Status: In progress
+- [x] Fix src/extract_lines.py to find files by repository and FileID. Owner: A. Status: Done
+- [ ] Make the extract again in the Linux VM with the fixed script, moved to before Phase 2 (see docs/DECISIONS.md). Owner: A. Status: Not started
 - [x] Cleaned dataset or a script that makes it. Owner: A. Status: Done
-- [ ] notebooks/03_preprocessing: normalization or scaling. Owner: A. Status: Not started
+- [x] notebooks/03_preprocessing: split by repository, log transform and scaling fitted on train. Owner: A. Status: Done
+- [x] notebooks/01_cleaning and notebooks/03_preprocessing run from top to bottom. Owner: A. Status: Done
 
 ## Person B
 
@@ -31,8 +33,8 @@ Rules: update only your own section. Status is one of Not started, In progress o
 
 ## Open questions
 
-- Duplicate policy
-- Outlier policy
-- Whether F and X differ in meaning for modeling
-- What to do with the 110 rows that have Found equal to 1 and blank LineText (see docs/FACTS.md)
-- Whether the rows where ValueEnd is past the end of the line are misaligned labels (see docs/FACTS.md)
+- Duplicate policy. Resolved by A on 2026-11-08, see docs/DECISIONS.md
+- Outlier policy. Resolved by A on 2026-11-08, see docs/DECISIONS.md
+- Whether F and X differ in meaning for modeling. Both are label 0. The test set has a larger share of X than train, see docs/FACTS.md
+- What to do with the 110 rows that have Found equal to 1 and blank LineText (see docs/FACTS.md). Resolved by A on 2026-11-08, they use shared FileID values and are dropped
+- Whether the rows where ValueEnd is past the end of the line are misaligned labels (see docs/FACTS.md). Resolved by A on 2026-11-08, nearly all use shared FileID values and are dropped
