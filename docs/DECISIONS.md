@@ -29,6 +29,7 @@ Rules: never delete another person's entry, append rows only in your own section
 | 2026-11-08 | In 03_preprocessing, check that train and test have similar sizes and label shares after the split by repository. | A few repositories hold a large share of rows, and the largest has twice the overall share of real secrets. | A |
 | 2026-11-08 | Keep rare file extensions as they are in the cleaned data and leave grouping them to src/features.py. | Grouping is a feature choice, and the cleaned data should keep the original values. | A |
 | 2026-11-09 | Split by RepoId with GroupShuffleSplit at test_size 0.2, trying seeds 0 to 199 and keeping the one whose test set is closest to 20 percent of rows and to the overall label 1 share. The chosen seed is 65. | Test size ranges from 8.94 to 44.39 percent of rows across seeds. The rule uses only sizes and label shares, never feature values. | A |
+| 2026-11-09 | Keep test rows whose line text also appears in train, and suggest Phase 2 reports test scores with and without them. | They are 1.12 percent of test rows and all have label 0, so they cannot make finding real secrets look easier. | A |
 
 ## Person B
 

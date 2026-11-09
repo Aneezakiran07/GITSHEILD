@@ -72,6 +72,7 @@ Format: `- YYYY-MM-DD | fact | source: notebook, command output or document | A 
 - 2026-11-09 | build_features on the cleaned file gives 39 feature columns with no missing values: 28 flags that only hold 0 and 1, and 11 numeric features (value_len, value_entropy, four value ratios, line_len, line_number, lines_spanned, var_name_len and path_depth). | source: notebooks/03_preprocessing.ipynb | A
 - 2026-11-09 | With GroupShuffleSplit at test_size 0.2 over seeds 0 to 199, the test set holds from 8.94 to 44.39 percent of rows, because it picks 20 percent of repositories and repository sizes differ a lot. | source: notebooks/03_preprocessing.ipynb | A
 - 2026-11-09 | Seed 65 gives train 268 repositories and 53,056 rows (80.03 percent, label 1 23.36 percent) and test 67 repositories and 13,235 rows (19.97 percent, label 1 23.26 percent). No repository is in both, and the largest repository is in train. X is 10.36 percent of test rows against 4.76 percent of train rows. | source: notebooks/03_preprocessing.ipynb | A
+- 2026-11-09 | After the split, 98 distinct line texts appear in both train and test, on 360 train rows and 148 test rows (1.12 percent of test rows). None of those 148 test rows has label 1. | source: notebooks/03_preprocessing.ipynb | A
 
 ## Person B
 
