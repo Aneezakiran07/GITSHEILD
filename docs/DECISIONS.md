@@ -28,6 +28,7 @@ Rules: never delete another person's entry, append rows only in your own section
 | 2026-11-08 | Keep every outlier and do not cap any value. Apply a log transform to length and position measures in 03_preprocessing before scaling. | The extreme values are real code such as bundled files, none is an error, and the long values and multi line labels are mostly real secrets. | A |
 | 2026-11-08 | In 03_preprocessing, check that train and test have similar sizes and label shares after the split by repository. | A few repositories hold a large share of rows, and the largest has twice the overall share of real secrets. | A |
 | 2026-11-08 | Keep rare file extensions as they are in the cleaned data and leave grouping them to src/features.py. | Grouping is a feature choice, and the cleaned data should keep the original values. | A |
+| 2026-11-09 | Split by RepoId with GroupShuffleSplit at test_size 0.2, trying seeds 0 to 199 and keeping the one whose test set is closest to 20 percent of rows and to the overall label 1 share. The chosen seed is 65. | Test size ranges from 8.94 to 44.39 percent of rows across seeds. The rule uses only sizes and label shares, never feature values. | A |
 
 ## Person B
 
