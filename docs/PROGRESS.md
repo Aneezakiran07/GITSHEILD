@@ -8,7 +8,7 @@ Rules: update only your own section. Status is one of Not started, In progress o
 
 - [x] notebooks/01_cleaning: missing values, duplicates, outliers, inconsistent formats. Owner: A. Status: Done
 - [x] Fix src/extract_lines.py to find files by repository and FileID. Owner: A. Status: Done
-- [ ] Make the extract again in the Linux VM with the fixed script, moved to before Phase 2 (see docs/DECISIONS.md). Owner: A. Status: Not started
+- [x] Decide whether to make the extract again in the Linux VM. Not needed, the 1,602 rows with a shared FileID stay dropped for both phases (see docs/DECISIONS.md). Owner: A. Status: Done
 - [x] Cleaned dataset or a script that makes it. Owner: A. Status: Done
 - [x] notebooks/03_preprocessing: split by repository, log transform and scaling fitted on train. Owner: A. Status: Done
 - [x] notebooks/01_cleaning and notebooks/03_preprocessing run from top to bottom. Owner: A. Status: Done
