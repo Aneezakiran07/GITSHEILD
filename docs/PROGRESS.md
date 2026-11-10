@@ -15,11 +15,11 @@ Rules: update only your own section. Status is one of Not started, In progress o
 
 ## Person B
 
-- [ ] src/features.py. Owner: B. Status: Not started
-- [ ] notebooks/02_eda: EDA with clear visualizations. Owner: B. Status: Not started
-- [ ] images with a short note on what each tells us. Owner: B. Status: Not started
-- [ ] INSIGHTS: written insights. Owner: B. Status: Not started
-- [ ] README.md: title, description, problem statement, dataset details, cleaning summary, key findings, how to run. Owner: B. Status: Not started
+- [x] src/features.py. Owner: B. Status: Done
+- [x] notebooks/02_eda: EDA with clear visualizations. Owner: B. Status: Done
+- [x] images with a short note on what each tells us. Owner: B. Status: Done
+- [x] INSIGHTS: written insights. Owner: B. Status: Done
+- [x] README.md: title, description, problem statement, dataset details, cleaning summary, key findings, how to run. Owner: B. Status: Done
 
 ## Shared
 

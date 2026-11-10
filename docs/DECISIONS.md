@@ -39,3 +39,8 @@ Rules: never delete another person's entry, append rows only in your own section
 
 | Date | Decision | Reason | Author |
 | --- | --- | --- | --- |
+| 2026-11-09 | build_features leaves out label, GroundTruth, Id, RepoId, CryptographyKey, PredefinedPattern and Category, and every feature is worked out from its own row. | Category is an annotator note a scanner would not have for new code, like CryptographyKey and PredefinedPattern, and per row features keep the scaling in 03_preprocessing free of leaks. | B |
+| 2026-11-09 | File extensions are grouped with a fixed list in src/features.py into code, config, script, doc, keyfile, none and other. | A fixed list needs no counts from the data, and it covers the 98 rare extensions without fitting anything. | B |
+| 2026-11-09 | Notebook outputs in 02_eda show counts, rates and charts only, never LineText or Value. | This follows the same rule as 01_cleaning, because push protection rejects the look alike secrets. | B |
+| 2026-11-09 | Keep the binary label with F and X together, and keep GroundTruth for error analysis in Phase 2. | 02_eda shows F and X differ, but the agreed target groups them, and X rows are likely the hardest false positives to check. | B |
+| 2026-11-09 | Flag value_empty as a possible leak of the labeling process, and test Phase 2 models with and without it. | It is 67.7 percent of F rows against 9.0 percent of T rows, and an empty value means the annotator marked the whole line, which a scanner would not see. | B |
