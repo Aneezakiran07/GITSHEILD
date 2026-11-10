@@ -20,7 +20,18 @@ Use these read settings for the raw extract too. Without keep_default_na=False, 
 
 ## Rows
 
-Each row is one labeled line. Id is the row key and is unique. Rows where Found is 0 are removed, along with every row that uses a FileID shared by several repositories. The other removal rules follow the open questions in docs/PROGRESS.md and will be recorded in docs/DECISIONS.md.
+Each row is one labeled line. Id is the row key and is unique. Rows where Found is 0 are removed, along with every row that uses a FileID shared by several repositories. The 3 single line rows whose value ends past the line are also removed. No rows are removed as duplicates or outliers. The reasons are in docs/DECISIONS.md.
+
+## Preprocessed files for Phase 2
+
+notebooks/03_preprocessing.ipynb reads the cleaned file and writes these files to data/processed. They stay out of git like the cleaned file.
+
+| File | Content |
+| --- | --- |
+| features_train.csv | Train rows with Id, RepoId, GroundTruth, label and the 39 features from src/features.py, numeric features log transformed where listed and scaled |
+| features_test.csv | Test rows in the same format, scaled with the scaler fitted on train |
+| repo_split.csv | RepoId and split, train or test, for every repository |
+| scaler_params.csv | For each numeric feature, whether log1p was applied and the train mean and scale |
 
 ## Columns
 
