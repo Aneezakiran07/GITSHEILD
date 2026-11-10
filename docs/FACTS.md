@@ -81,3 +81,15 @@ Format: `- YYYY-MM-DD | fact | source: notebook, command output or document | A 
 
 ## Person B
 
+- 2026-11-09 | build_features returns 39 numeric columns for the 66,291 cleaned rows, with no missing values and the same index as load_data. | source: src/features.py run on the cleaned file | B
+- 2026-11-09 | GroundTruth in the cleaned file: T 15,470, F 46,924, X 3,897. | source: notebooks/02_eda.ipynb | B
+- 2026-11-09 | 335 repositories, median 69 rows each. The 5 largest hold 33.32 percent of rows, and 24 repositories have no real secret. | source: notebooks/02_eda.ipynb | B
+- 2026-11-09 | Share of real secrets by file type group: keyfile 56.2 percent (306 rows), doc 43.6 (14,340), none 23.8 (1,056), config 21.8 (15,727), other 16.5 (5,393), code 15.3 (28,773), script 12.5 (696). | source: notebooks/02_eda.ipynb | B
+- 2026-11-09 | Share of real secrets by category: Bearer Authorization 100 percent, PEM Private Key 94.4, AWS Client ID 86.5, JSON Web Token 74.6, Password 19.3, Token 18.8, Key 17.3, API 6.0. 3,964 rows have more than one category. | source: notebooks/02_eda.ipynb | B
+- 2026-11-09 | Value is empty on 62.5 percent of label 0 rows and 9.0 percent of label 1 rows. By GroundTruth: F 67.7, T 9.0, X 0.1 percent. | source: notebooks/02_eda.ipynb | B
+- 2026-11-09 | On rows with a value, label 1 against label 0: median length 36 against 18, median entropy 3.74 against 3.24, mean digit ratio 0.391 against 0.229, mean symbol ratio 0.038 against 0.127, mean upper case ratio 0.118 in both. | source: notebooks/02_eda.ipynb | B
+- 2026-11-09 | Median line length is 69 for label 1 and 56 for label 0. Median line number is 276 and 250. 1,347 rows are multi line. | source: notebooks/02_eda.ipynb | B
+- 2026-11-09 | Share of real secrets when a flag is 1: private key header 93.2 percent (1,305 rows), secret in the variable name 43.8 (3,367), password in the variable name 22.6 (9,281), token in the variable name 17.5 (4,729). An assignment appears on 64,562 rows. | source: notebooks/02_eda.ipynb | B
+- 2026-11-09 | Share of real secrets by path word: mock 40.8 percent (1,730 rows), test 36.9 (30,656), example 27.0 (4,351), doc 25.4 (2,450). A test path holds 73.1 percent of T rows, 35.8 percent of F rows and 65.5 percent of X rows. | source: notebooks/02_eda.ipynb | B
+- 2026-11-09 | X differs from F: median value length 7 and entropy 2.58, password in the variable name on 35.2 percent of X rows against 12.4 percent of F rows. | source: notebooks/02_eda.ipynb | B
+- 2026-11-09 | Highest Spearman correlation with the label: value_len 0.531, value_digit_ratio 0.528, value_entropy 0.504, value_empty -0.453, path_has_test 0.297. value_len and value_entropy correlate at 0.971, and lines_spanned and multi_line at 1.0. | source: notebooks/02_eda.ipynb | B
