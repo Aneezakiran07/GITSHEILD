@@ -3,3 +3,6 @@ data/raw/
 
 # Cleaned data holds the same lines, so the notebook makes it instead
 data/processed/
+
+# Saved Phase 2 models
+models/
