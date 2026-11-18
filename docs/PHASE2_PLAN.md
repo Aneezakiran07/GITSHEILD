@@ -34,7 +34,7 @@ Owns `notebooks/04_models.ipynb` and `notebooks/05_explain.ipynb`.
 - Report test scores two extra ways, as promised in docs/DECISIONS.md:
   - with and without `value_empty` (a possible leak flagged by B)
   - with and without the 1.12 percent of test rows whose line text also appears in train
-- Save the chosen model and its threshold in `models/` (ignored by git), in the format agreed in step 1 of the timeline.
+- Save the chosen model and its threshold in `models/` (ignored by git) by 21 Nov, in the format agreed on 18 Nov.
 
 **05_explain**
 
@@ -89,17 +89,74 @@ Owns `notebooks/06_baselines.ipynb`, `src/hook.py`, README and INSIGHTS, and kee
 
 ## Timeline
 
-| Dates | Person A | Person B |
+All work is finished by 25 Nov. 26 Nov is for the write-up and the final run, 27 Nov is spare time for anything that slips, and on 28 Nov we only submit.
+
+| Date | Person A | Person B | Checkpoint at the end of the day |
+|---|---|---|---|
+| 18 Nov | Agree the two decisions below. Share `credata_raw_extract.csv` and `credata_clean.csv` with B. Install xgboost and shap and add them to requirements.txt | Agree the two decisions below. Install CredSweeper and add it to requirements.txt | Both decisions written in docs/DECISIONS.md. B can open the data |
+| 19 Nov | 04_models: load the tables, set up GroupKFold, logistic regression | 06_baselines: regex baseline scored on the test repositories | Logistic regression cross-validation scores exist. Regex scores exist |
+| 20 Nov | 04_models: random forest and XGBoost with small search grids | 06_baselines: CredSweeper runs on the test lines | All three models have cross-validation scores. CredSweeper runs, or the fallback is used |
+| 21 Nov | 04_models: choose the model and threshold, save `models/gitguard_model.joblib` | 06_baselines: comparison table. src/hook.py: read staged lines | **The real model file is saved.** Baselines are done |
+| 22 Nov | 04_models: test scores, including the with and without versions | src/hook.py: features, scaling and the stand-in model | 04_models pull request opened |
+| 23 Nov | 05_explain: SHAP summary plot | src/hook.py: switch to the real model, test it on a demo commit | The hook blocks a fake secret and lets a normal line through |
+| 24 Nov | 05_explain: error analysis by F and X, by file type and by path | 06_baselines pull request opened, add the model rows A gives | 05_explain pull request opened |
+| 25 Nov | Review B's pull requests. Fix review comments | Review A's pull requests. Fix review comments. Hook pull request opened | **Freeze: no new features or analyses after today.** Everything is merged into main |
+| 26 Nov | Run 01 to 05 from top to bottom on main. Send B the final numbers | README and INSIGHTS Phase 2 sections, using A's final numbers. Run 06 from top to bottom | README and INSIGHTS merged |
+| 27 Nov | Spare day. Final check on a fresh clone of main | Spare day. Final check on a fresh clone of main | The submission checklist below is all ticked |
+| 28 Nov | Submit | Submit | Done |
+
+## Making sure we finish by 28 Nov
+
+### Must have and nice to have
+
+If time runs short, finish every must-have item before starting any nice-to-have item.
+
+**Must have**
+
+- The three models with class weights, cross-validation grouped by repository, a tuned threshold and test scores.
+- Test scores with and without `value_empty`, because docs/DECISIONS.md promises it and it is cheap to run.
+- The regex baseline, and CredSweeper or a written reason why it could not run.
+- A SHAP summary plot for the chosen model.
+- A hook that runs on a real commit and blocks a fake secret.
+- README and INSIGHTS Phase 2 sections, and every notebook run from top to bottom.
+
+**Nice to have**
+
+- Test scores with and without the rows whose line text also appears in train.
+- SHAP examples for single rows.
+- Error rates by file type and by path.
+- An install script for the hook, and colours or tidy messages in its output.
+
+### Fallbacks for the risky parts
+
+| Risk | Signal | Fallback |
 |---|---|---|
-| 18 to 19 Nov | Agree the model file format and the hook's value extraction. Share `credata_raw_extract.csv` and `credata_clean.csv` with B privately | Agree the same two things. Set up CredSweeper |
-| 19 to 22 Nov | 04_models: cross-validation, tuning, threshold. Model saved by 22 Nov | 06_baselines: regex and CredSweeper |
-| 23 to 25 Nov | 04_models final test scores, 05_explain: SHAP and error analysis | src/hook.py with the stand-in model, then the real model |
-| 26 to 27 Nov | Run notebooks from top to bottom, review B's pull requests | README and INSIGHTS, review A's pull requests |
-| 28 Nov | Due | Due |
+| CredSweeper will not install or run on Windows | Not running by the end of 20 Nov | Run it once in the Linux VM on the test lines only and save its predictions as a CSV. If that also fails, report the regex baseline only and say why in the notebook and README |
+| Model tuning is slow | One model's search takes more than about an hour | Use a smaller grid or a random search with a fixed number of tries, and write down the setting used |
+| The model is late | No model file by the end of 21 Nov | A saves the logistic regression model straight away as a temporary model, so B can finish the hook. The final model replaces it later with the same file format |
+| The hook cannot find values well | The demo commit gives wrong scores on 23 Nov | A trains one extra model on line and path features only, and the hook uses that one. Report both models |
+| SHAP is slow on the tree models | The summary plot takes too long to make | Use TreeExplainer on a random sample of test rows with a fixed seed, and say so in the notebook |
+| A pull request waits for review | No review within one day | Message the other person. A review that waits past 25 Nov blocks the freeze, so reviews come before new work |
+
+### Daily check
+
+At the end of each working day, each person sends the other a short message with three lines: what is done, what is next, and what is blocking. Each person also updates their own section of docs/PROGRESS.md in a small commit. If a checkpoint in the timeline is missed, use the fallback for it the next morning instead of waiting.
+
+### Submission checklist (27 Nov)
+
+- [ ] main has every pull request merged and nothing is left only on aneeza or fatima.
+- [ ] A fresh clone of main, with the data files copied in, runs every notebook from top to bottom without errors.
+- [ ] requirements.txt has every package with an exact version.
+- [ ] The README says how to run each notebook and how to install and use the hook.
+- [ ] Every number in the README and INSIGHTS matches a notebook output.
+- [ ] docs/FACTS.md and docs/DECISIONS.md have the Phase 2 entries from both people.
+- [ ] No notebook output shows `LineText` or `Value`.
+- [ ] No data files or model files are tracked in git.
+- [ ] docs/PROGRESS.md shows every Phase 2 item as Done.
 
 ## Two decisions needed before work starts
 
 1. **Model file format.** A proposal: one joblib file holding the model, the feature column order and the threshold, saved as `models/gitguard_model.joblib`. B's hook loads only this file and `scaler_params.csv`.
 2. **Value extraction in the hook.** Choose the rule the hook uses to find the value in a line. If the rule is very different from how the annotated `Value` looks, A should also train one model on line and path features only and compare it, so the hook does not depend on features it cannot build well.
 
-Write both decisions in docs/DECISIONS.md once they are agreed.
+Write both decisions in docs/DECISIONS.md once they are agreed, on 18 Nov at the latest.
