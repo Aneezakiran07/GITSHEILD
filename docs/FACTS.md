@@ -78,6 +78,8 @@ Format: `- YYYY-MM-DD | fact | source: notebook, command output or document | A 
 - 2026-11-09 | Min max scaling of raw line_len on the train set puts the median at 0.00007 and 99.44 percent of train rows below 0.01. | source: notebooks/03_preprocessing.ipynb | A
 - 2026-11-09 | After the log transform and a StandardScaler fitted on train, test means range from minus 0.322 (line_number) to 0.379 (path_depth) and test standard deviations from 0.695 (line_number) to 1.424 (path_depth). | source: notebooks/03_preprocessing.ipynb | A
 - 2026-11-09 | 03_preprocessing writes features_train.csv (53,056 rows, 43 columns), features_test.csv (13,235 rows, 43 columns), repo_split.csv (335 repositories) and scaler_params.csv to data/processed. No Id is in both feature files and together they cover all 66,291 cleaned rows. | source: notebooks/03_preprocessing.ipynb | A
+- 2026-11-20 | The proposed hook value rule (text after the first :=, =>, = or :, trimmed, trailing comma or semicolon removed, cut at the matching quote) on the 64,944 single line cleaned rows: 33,115 rows have an annotated Value, and the rule matches it exactly on 56.7 percent of them (label 1 66.37 percent of 14,075, label 0 49.56 percent of 19,040) and contains it on 87.5 percent. It finds nothing on 2.98 percent of them. | source: pandas check of the rule on the cleaned file | A
+- 2026-11-20 | On the 31,829 single line cleaned rows with an empty annotated Value, the proposed rule still finds a value on 98.23 percent. | source: pandas check of the rule on the cleaned file | A
 
 ## Person B
 

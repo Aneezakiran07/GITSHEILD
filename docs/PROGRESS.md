@@ -12,6 +12,11 @@ Rules: update only your own section. Status is one of Not started, In progress o
 - [x] Cleaned dataset or a script that makes it. Owner: A. Status: Done
 - [x] notebooks/03_preprocessing: split by repository, log transform and scaling fitted on train. Owner: A. Status: Done
 - [x] notebooks/01_cleaning and notebooks/03_preprocessing run from top to bottom. Owner: A. Status: Done
+- [ ] Phase 2: agree the model file format and the hook value rule with B. Proposed by A on 2026-11-20 in docs/DECISIONS.md, waits for B. Owner: A. Status: In progress
+- [x] Phase 2: install xgboost and shap and add them to requirements.txt. Owner: A. Status: Done
+- [ ] Phase 2: share credata_clean.csv, repo_split.csv and scaler_params.csv with B privately. Owner: A. Status: Not started
+- [ ] Phase 2: notebooks/04_models. Owner: A. Status: Not started
+- [ ] Phase 2: notebooks/05_explain. Owner: A. Status: Not started
 
 ## Person B
 
