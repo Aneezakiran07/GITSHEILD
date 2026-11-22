@@ -15,7 +15,7 @@ Rules: update only your own section. Status is one of Not started, In progress o
 - [ ] Phase 2: agree the model file format and the hook value rule with B. Proposed by A on 2026-11-20 in docs/DECISIONS.md, waits for B. Owner: A. Status: In progress
 - [x] Phase 2: install xgboost and shap and add them to requirements.txt. Owner: A. Status: Done
 - [ ] Phase 2: share credata_clean.csv, repo_split.csv and scaler_params.csv with B privately. Owner: A. Status: Not started
-- [ ] Phase 2: notebooks/04_models. Folds, three models, model choice, threshold and the saved model files done, test scores next. Owner: A. Status: In progress
+- [x] Phase 2: notebooks/04_models. Folds, three models, model choice, threshold, saved model files and test scores. Owner: A. Status: Done
 - [ ] Phase 2: notebooks/05_explain. Owner: A. Status: Not started
 
 ## Person B
