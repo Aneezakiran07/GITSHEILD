@@ -25,6 +25,10 @@ Rules: update only your own section. Status is one of Not started, In progress o
 - [x] images with a short note on what each tells us. Owner: B. Status: Done
 - [x] INSIGHTS: written insights. Owner: B. Status: Done
 - [x] README.md: title, description, problem statement, dataset details, cleaning summary, key findings, how to run. Owner: B. Status: Done
+- [x] Phase 2: notebooks/06_baselines with regex and CredSweeper baselines, a comparison table and the hook scored on the test lines. Owner: B. Status: Done
+- [x] Phase 2: src/hook.py pre-commit hook using the saved model, tested on a demo commit. Owner: B. Status: Done
+- [x] Phase 2: confirm the model file format and the hook value rule. Owner: B. Status: Done
+- [ ] Phase 2: README and INSIGHTS Phase 2 sections. Waits for the final test scores from 04_models. Owner: B. Status: In progress
 
 ## Shared
 
