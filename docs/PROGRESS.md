@@ -16,7 +16,7 @@ Rules: update only your own section. Status is one of Not started, In progress o
 - [x] Phase 2: install xgboost and shap and add them to requirements.txt. Owner: A. Status: Done
 - [ ] Phase 2: share credata_clean.csv, repo_split.csv and scaler_params.csv with B privately. Owner: A. Status: Not started
 - [x] Phase 2: notebooks/04_models. Folds, three models, model choice, threshold, saved model files and test scores. Owner: A. Status: Done
-- [ ] Phase 2: notebooks/05_explain. Owner: A. Status: Not started
+- [ ] Phase 2: notebooks/05_explain. SHAP summary, single rows and error analysis by F and X, file type, path and repository done, comparison with the baselines next. Owner: A. Status: In progress
 
 ## Person B
 
