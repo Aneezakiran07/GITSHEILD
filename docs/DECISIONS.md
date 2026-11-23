@@ -56,6 +56,7 @@ Rules: never delete another person's entry, append rows only in your own section
 | 2026-11-23 | Explain only the hook model, xgboost_no_value_empty, loaded from models/gitguard_model.joblib, with SHAP TreeExplainer on all test rows and no sample. | It is the model that ships, the scores then match test_scores.csv and the hook exactly, and all rows take only about 25 seconds, so the sampling fallback in docs/PHASE2_PLAN.md is not needed. | A |
 | 2026-11-23 | Show the SHAP plot inline in 05_explain and do not save it to images. | images is owned by B. B can export the plot for the README if wanted. | A |
 | 2026-11-23 | Split test errors into TP, FN, FP on F rows, FP on X rows and TN, and report errors by extension group, path word and repository. Show value length in original units by undoing the log transform and scaling with scaler_params.csv. | B decided in Phase 1 that F and X are compared in Phase 2, and the plan asks for errors by file type and path. Original units make the medians readable. | A |
+| 2026-11-23 | Compare the model with the baselines in 05_explain using baseline_flags.csv from B, after checking that its rows, labels and model scores match. Report which real secrets and false alarms each scanner shares with the model, and what changes with the hook's value rule. | It reuses B's baseline runs instead of running CredSweeper again, and the file holds ids, labels and flags only. The overlap shows whether the model could work next to a rule scanner. | A |
 
 ## Person B
 

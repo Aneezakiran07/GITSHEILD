@@ -105,6 +105,10 @@ Format: `- YYYY-MM-DD | fact | source: notebook, command output or document | A 
 - 2026-11-23 | Hook model by extension group (recall, false alarm rate, precision): config 0.9667, 0.0637, 0.9317; code 0.9081, 0.0466, 0.8285; other 0.8789, 0.0347, 0.7951; doc 0.8859, 0.0584, 0.7135; keyfile 1.0, 0.8333, 0.8333 on 62 rows with 12 non secrets. | source: notebooks/05_explain.ipynb | A
 - 2026-11-23 | Hook model by path word: recall 0.919 to 0.945 in every group. False alarm rate in test paths 0.0674 against 0.0249 in paths with no test, example, mock or doc word. Precision in example paths 0.9608. | source: notebooks/05_explain.ipynb | A
 - 2026-11-23 | The 219 missed secrets come from 28 of the 67 test repositories, and the five worst hold 71.69 percent (one repository holds 74). The 479 false alarms come from 50 repositories, and the five worst hold 50.73 percent. | source: notebooks/05_explain.ipynb | A
+- 2026-11-23 | data/processed/baseline_flags.csv from B covers the same 13,235 test rows with the same labels, and its model_annotated_score equals the scores of models/gitguard_model.joblib exactly. | source: notebooks/05_explain.ipynb | A
+- 2026-11-23 | Of the 219 real secrets the hook model misses, CredSweeper rules find 218, CredSweeper ML 212 and regex 163. CredSweeper rules miss 20 secrets the model finds, regex misses 1,160. No real test secret is missed by the model, regex and CredSweeper rules together. | source: notebooks/05_explain.ipynb | A
+- 2026-11-23 | Of the false alarms of regex (5,162) and CredSweeper rules (3,869), the model avoids 4,820 and 3,631. Of the model's 479 false alarms, 238 are also raised by CredSweeper rules and 342 by regex. | source: notebooks/05_explain.ipynb | A
+- 2026-11-23 | With the hook's value rule instead of the annotated value, the model loses 677 real secrets and gains 18, and raises 578 new false alarms on F rows while dropping 116. The lost secrets are in config (307), code (280), other (47), doc (29), script (8) and none (6) files. | source: notebooks/05_explain.ipynb | A
 
 ## Person B
 
