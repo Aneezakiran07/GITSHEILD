@@ -4,5 +4,7 @@ data/raw/
 # Cleaned data holds the same lines, so the notebook makes it instead
 data/processed/
 
-# Saved Phase 2 models
-models/
+# Saved Phase 2 models, except the hook model and its scaler, which the hook and the website need
+models/*
+!models/gitguard_model.joblib
+!models/scaler_params.csv

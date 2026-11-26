@@ -20,7 +20,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from features import ROOT, build_features  # noqa: E402
 
 MODEL_PATH = ROOT / "models" / "gitguard_model.joblib"
-SCALER_PATH = ROOT / "data" / "processed" / "scaler_params.csv"
+
+# The scaler is shipped next to the model so the hook and the website run without the data folder
+SHIPPED_SCALER_PATH = ROOT / "models" / "scaler_params.csv"
+SCALER_PATH = SHIPPED_SCALER_PATH if SHIPPED_SCALER_PATH.exists() else ROOT / "data" / "processed" / "scaler_params.csv"
 
 # The value rule agreed in docs/DECISIONS.md, the first of these signs on the line starts the value
 VALUE_SIGN = re.compile(r":=|=>|=|:")

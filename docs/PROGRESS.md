@@ -17,6 +17,7 @@ Rules: update only your own section. Status is one of Not started, In progress o
 - [x] Phase 2: share credata_clean.csv, repo_split.csv and scaler_params.csv with B privately. Owner: A. Status: Done
 - [x] Phase 2: notebooks/04_models. Folds, three models, model choice, threshold, saved model files and test scores. Owner: A. Status: Done
 - [x] Phase 2: notebooks/05_explain. SHAP summary, single rows, error analysis by F and X, file type, path and repository, and comparison with the baselines. Owner: A. Status: Done
+- [x] Phase 2: Streamlit website in app, shipped model files, confusion matrices, precision recall curves, saved charts and README conclusion, limitations and website sections. Owner: A. Status: Done
 
 ## Person B
 
