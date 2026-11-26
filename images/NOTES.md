@@ -15,3 +15,4 @@ Every image is made by `notebooks/02_eda.ipynb` from the cleaned data (66,291 ro
 | 09_path_words.png | Test and mock paths have more real secrets (36.9 and 40.8 percent), not fewer, so ignoring test folders would miss real credentials. |
 | 10_f_vs_x.png | F and X differ: F mostly has no value, while X has short, low entropy values, is often named like a password and sits in test paths like T. |
 | 11_correlation.png | The value measures are the most linked with the label, and value length with entropy (0.971) and lines spanned with multi line (1.0) carry the same information. |
+| 12_model_comparison.png | Made by notebooks/06_baselines.ipynb. On the test rows the hook model (F1 0.891) is far above the regex scanner (0.369) and CredSweeper's rules (0.611), and keeps 0.704 through the hook. CredSweeper with its ML filter (0.982) has probably seen the labels. |
