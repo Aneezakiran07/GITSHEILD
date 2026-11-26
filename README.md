@@ -4,6 +4,14 @@ Telling real leaked credentials apart from false alarms in source code.
 
 **Live website: https://gitsheild.streamlit.app/**
 
+| Document | Contents |
+| --- | --- |
+| [How to run](#how-to-run) | Set up, run the notebooks, the website and the pre-commit hook |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Architecture: the offline pipeline, the runtime of the hook and the website, and the model file |
+| [docs/SECURITY_ANALYSIS.md](docs/SECURITY_ANALYSIS.md) | Security analysis: threat model, results, attacks tried against the hook, bypasses, performance and lessons |
+| [INSIGHTS.md](INSIGHTS.md) | Written findings from the data and the models |
+| [docs/CONTRIBUTIONS.md](docs/CONTRIBUTIONS.md) | What each team member built |
+
 ## Problem statement
 
 Secret scanners find passwords, API keys and tokens in code by matching keywords and patterns. Most of what they flag is not a real secret: placeholders, test values, example strings or random text that only looks like a key. Too many false alarms make developers ignore the scanner. This project uses the context around each candidate (the variable name, the file type, the path and the shape of the value) to predict whether a flagged line holds a real credential.
@@ -223,7 +231,7 @@ As a real tool, through the pre-commit hook and the website, the model is weaker
 | Website | `app/app.py`, `app/requirements.txt` | The Streamlit website and its packages | A |
 | Both | `images` | Charts 01 to 11 from 02_eda, 12 from 06_baselines, 13 and 14 from 04_models, 15 from 05_explain, with notes in `images/NOTES.md` | Both |
 | Both | `INSIGHTS.md` | Written findings | B |
-| Both | `docs` | Facts, decisions, progress, the cleaned data format and the Phase 2 plan | Both |
+| Both | `docs` | Architecture, security analysis, contributions, facts, decisions, progress, the cleaned data format and the Phase 2 plan | Both |
 
 The notebooks are numbered in the order they run, so 01 to 03 are Phase 1 and 04 to 06 are Phase 2. They share one folder because each one reads the files the one before it writes, with paths relative to `notebooks`.
 
@@ -268,6 +276,13 @@ jupyter nbconvert --to notebook --execute --inplace 06_baselines.ipynb
 
 ```bash
 streamlit run app/app.py
+```
+
+6. Protect a repository with the pre-commit hook. This also needs only step 1. Run it inside the repository you want to protect, then commit as usual. See [The pre-commit hook](#the-pre-commit-hook) for the output.
+
+```bash
+python path/to/GITSHEILD/src/hook.py --install
+python path/to/GITSHEILD/src/hook.py --check 'DB_PASSWORD = "Xk9pQ2vL8mN4rT7wZ1yB6cF3"'
 ```
 
 ## Team
