@@ -2,6 +2,8 @@
 
 Telling real leaked credentials apart from false alarms in source code.
 
+**Live website: https://gitsheild.streamlit.app/**
+
 ## Problem statement
 
 Secret scanners find passwords, API keys and tokens in code by matching keywords and patterns. Most of what they flag is not a real secret: placeholders, test values, example strings or random text that only looks like a key. Too many false alarms make developers ignore the scanner. This project uses the context around each candidate (the variable name, the file type, the path and the shape of the value) to predict whether a flagged line holds a real credential.
@@ -172,9 +174,13 @@ python src/hook.py --scan some_file.py
 - **Check a line:** paste a line of code and its file path, or pick one of the examples. The site shows the score, the threshold, whether the line looks like a real secret, and the six features that pushed the score most, from SHAP.
 - **Scan a file:** upload a source or config file. The site scores every line, joins private key blocks as the hook does, and lists the lines that look like real secrets with their values masked.
 
-**Live website:** not deployed yet. Run it locally as below.
+**Live website: https://gitsheild.streamlit.app/** (deployed on Streamlit Community Cloud from `main`)
 
-Run it locally from the repository root:
+![The website checking a hard coded password](images/16_website.png)
+
+The screenshot shows the "Hard coded password" example: the line is flagged with a score of 0.989 against the threshold of 0.416, the value is masked, and the table lists the features that pushed the score, led by the high entropy of the value.
+
+You can also run it locally from the repository root:
 
 ```bash
 pip install -r app/requirements.txt
