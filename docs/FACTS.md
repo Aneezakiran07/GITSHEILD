@@ -114,6 +114,7 @@ Format: `- YYYY-MM-DD | fact | source: notebook, command output or document | A 
 - 2026-11-26 | On the test precision recall curves XGBoost and the random forest almost overlap, and XGBoost is slightly higher above recall 0.9. | source: notebooks/04_models.ipynb, images/14_precision_recall.png | A
 - 2026-11-26 | Flagging a line only when both CredSweeper rules and the model flag it gives 238 false alarms and misses 239 real secrets. Flagging it when either flags it misses 1 real secret. | source: overlap counts in notebooks/05_explain.ipynb | A
 - 2026-11-26 | app/app.py, tested with streamlit.testing AppTest: a hard coded password line scores 0.989 (flagged), a password read from the environment 0.384, a test password in a test file 0.329 and normal code 0.006 (all not flagged), with no exceptions. A file with one fake password among three lines flags only that line (0.990). | source: AppTest run and src/hook.py score on a scratch file | A
+- 2026-11-27 | The website is live at https://gitsheild.streamlit.app/, deployed from main with app/app.py. The hard coded password example scores 0.989 and is flagged, the same score as the local AppTest run. | source: the live website, screenshot images/16_website.png | A
 
 ## Person B
 
