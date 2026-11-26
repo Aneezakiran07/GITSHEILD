@@ -109,6 +109,7 @@ Format: `- YYYY-MM-DD | fact | source: notebook, command output or document | A 
 - 2026-11-23 | Of the 219 real secrets the hook model misses, CredSweeper rules find 218, CredSweeper ML 212 and regex 163. CredSweeper rules miss 20 secrets the model finds, regex misses 1,160. No real test secret is missed by the model, regex and CredSweeper rules together. | source: notebooks/05_explain.ipynb | A
 - 2026-11-23 | Of the false alarms of regex (5,162) and CredSweeper rules (3,869), the model avoids 4,820 and 3,631. Of the model's 479 false alarms, 238 are also raised by CredSweeper rules and 342 by regex. | source: notebooks/05_explain.ipynb | A
 - 2026-11-23 | With the hook's value rule instead of the annotated value, the model loses 677 real secrets and gains 18, and raises 578 new false alarms on F rows while dropping 116. The lost secrets are in config (307), code (280), other (47), doc (29), script (8) and none (6) files. | source: notebooks/05_explain.ipynb | A
+- 2026-11-26 | Final run on main at acc1fc7: notebooks 01_cleaning, 03_preprocessing, 04_models and 05_explain run from top to bottom without errors, and every text output is identical to the committed outputs. src/hook.py scores x = 1 at 0.0014 (not flagged) and a fake DB_PASSWORD line at 0.9891 (flagged). The README figure of 49.93 percent exact value matches on 6,104 of 13,086 single line test rows reproduces. | source: nbconvert runs of the four notebooks, src/hook.py --check and a pandas check | A
 
 ## Person B
 
