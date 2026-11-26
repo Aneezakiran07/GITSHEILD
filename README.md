@@ -74,6 +74,80 @@ From `notebooks/02_eda.ipynb`. The full write up is in `INSIGHTS.md` and the cha
 
 ![Words in the file path](images/09_path_words.png)
 
+## Phase 2: models, baselines and the hook
+
+### Models
+
+Done in `notebooks/04_models.ipynb`. Three models are trained with class weights on the train repositories: logistic regression, random forest and XGBoost. Each is tuned with 5 fold cross validation grouped by repository, on three feature sets: all 39 features, all but `value_empty`, and line and path features only. Each model's decision threshold is the one with the best F1 on its out of fold predictions, so the test set was used only once, at the end.
+
+The hook model is **XGBoost without `value_empty`** (max_depth 6, learning_rate 0.1, 300 trees, threshold 0.4158). It was chosen by a rule fixed before any test score, and it also has the highest test F1. `value_empty` is left out because the hook cannot rebuild it, and the trees never used it anyway: XGBoost with and without it scores the same.
+
+### Results on the test repositories
+
+All scores are on the 13,235 test rows from 67 repositories that were never used in training. The models come from `04_models.ipynb`, the baselines and the hook row from `06_baselines.ipynb`.
+
+| Scanner | Precision | Recall | F1 |
+| --- | --- | --- | --- |
+| Flag every line | 0.2326 | 1.0000 | 0.3774 |
+| Regex scanner (keyword next to an assignment, or a known key format) | 0.2651 | 0.6049 | 0.3686 |
+| CredSweeper 1.19.6, rules only | 0.4414 | 0.9932 | 0.6112 |
+| CredSweeper 1.19.6 with its ML filter * | 0.9787 | 0.9860 | 0.9824 |
+| Logistic regression, without value_empty | 0.7930 | 0.7830 | 0.7880 |
+| Random forest, without value_empty | 0.8944 | 0.8723 | 0.8832 |
+| **XGBoost, without value_empty (hook model)** | **0.8565** | **0.9288** | **0.8912** |
+| **XGBoost through the hook (value found by the hook's rule)** | **0.6929** | **0.7147** | **0.7037** |
+| Random forest, line and path features only | 0.3785 | 0.9344 | 0.5387 |
+
+\* CredSweeper comes from the team that built CredData. Its filter flags only 0.7 percent of F rows and 0.4 percent of X rows, so it has very likely been trained on these labels, and its score is not a fair comparison.
+
+![Baselines and models on the test repositories](images/12_model_comparison.png)
+
+- The hook model finds 2,859 of 3,078 real secrets (92.88 percent) and raises false alarms on 3.31 percent of F rows and 13.71 percent of X rows. Its test average precision is 0.9468 and ROC AUC 0.9859.
+- Its average precision in cross validation is lower, 0.9072 with a standard deviation of 0.0325, because scores vary a lot by repository. The cross validation number is the more careful estimate.
+- Without the 148 test rows whose line text also appears in train, F1 changes by at most 0.0028 for any model (0.8915 for the hook model).
+- **Through the hook, F1 drops from 0.8912 to 0.7037.** The hook cannot see the annotated value, so it finds the value with a simple rule. The rule finds exactly the annotated value on 49.93 percent of the 6,104 single line test rows that have one, and on 24.68 percent of all 13,086 single line test rows. The model then misses 677 more real secrets, mostly in config (307) and code (280) files, and raises 578 more false alarms on F rows. It is still well above the regex scanner and CredSweeper's rules.
+- The line and path models need no value but flag over 40 percent of F rows, so they are not usable on their own.
+
+### What the model relies on
+
+From `notebooks/05_explain.ipynb` with SHAP on all test rows. The value features dominate: `value_entropy` alone holds 29.88 percent of the total SHAP importance, and the five largest features hold 60.35 percent, four of them describing the value. The full write up is in `INSIGHTS.md`.
+
+## The pre-commit hook
+
+`src/hook.py` scans the lines added in a commit and blocks the commit when one of them looks like a real secret. It builds the same 38 features as training with `src/features.py`, applies the saved log transform and scaling from `data/processed/scaler_params.csv`, and scores each line with `models/gitguard_model.joblib`.
+
+To match training, it
+
+- finds the value as the text after the first `:=`, `=>`, `=` or `:`, trimmed, without a trailing comma or semicolon and cut at the matching quote
+- rewrites the file path to the CredData shape, `data/00000000/folders/00000000.ext`, because training paths keep their folders but use random file names
+- joins a private key from its BEGIN line to its END line into one row, as the labels do
+- skips lockfiles, notebook image lines and any line that contains the comment `gitsheild:allow`
+
+### Install
+
+The hook needs the model file `models/gitguard_model.joblib` and `data/processed/scaler_params.csv`, which stay out of git and are shared by the team. Then, inside the repository you want to protect:
+
+```bash
+python path/to/GITSHEILD/src/hook.py --install
+```
+
+This writes `.git/hooks/pre-commit`, which runs the hook with the same Python on every commit.
+
+### Use
+
+```text
+$ git commit -m "add settings"
+GITSHEILD: 1 added line(s) look like real secrets (xgboost_no_value_empty, threshold 0.4158)
+  settings.py:1  score 1.00  Xk9p************
+Remove the secret, add the comment gitsheild:allow to the line, or commit with --no-verify if you are sure it is not one.
+```
+
+The value is masked in the output. A commit of normal code goes through without any message. To test lines without committing:
+
+```bash
+python src/hook.py --scan some_file.py
+```
+
 ## Repository layout
 
 | Path | Contents | Owner |
@@ -83,9 +157,13 @@ From `notebooks/02_eda.ipynb`. The full write up is in `INSIGHTS.md` and the cha
 | `src/features.py` | `load_data` and `build_features` | B |
 | `notebooks/02_eda.ipynb` | Exploratory data analysis | B |
 | `notebooks/03_preprocessing.ipynb` | Split by repository, log transform and scaling fitted on train | A |
-| `images` | Charts from 02_eda, with notes in `images/NOTES.md` | B |
+| `notebooks/04_models.ipynb` | Grouped cross validation, three models, thresholds, saved models and test scores | A |
+| `notebooks/05_explain.ipynb` | SHAP and error analysis | A |
+| `notebooks/06_baselines.ipynb` | Regex and CredSweeper baselines, the comparison table and the hook on the test lines | B |
+| `src/hook.py` | The pre-commit hook | B |
+| `images` | Charts from 02_eda and 06_baselines, with notes in `images/NOTES.md` | B |
 | `INSIGHTS.md` | Written findings | B |
-| `docs` | Facts, decisions, progress and the cleaned data format | Both |
+| `docs` | Facts, decisions, progress, the cleaned data format and the Phase 2 plan | Both |
 
 ## How to run
 
@@ -116,7 +194,15 @@ jupyter nbconvert --to notebook --execute --inplace 02_eda.ipynb
 jupyter nbconvert --to notebook --execute --inplace 03_preprocessing.ipynb
 ```
 
+4. Run the Phase 2 notebooks in order. `04_models.ipynb` saves the models to `models` and the test scores to `data/processed`, `05_explain.ipynb` explains the hook model, and `06_baselines.ipynb` scores the baselines and the hook. `06_baselines` runs CredSweeper on every test line, which takes several minutes.
+
+```bash
+jupyter nbconvert --to notebook --execute --inplace 04_models.ipynb
+jupyter nbconvert --to notebook --execute --inplace 05_explain.ipynb
+jupyter nbconvert --to notebook --execute --inplace 06_baselines.ipynb
+```
+
 ## Team
 
-- Person A: Aneeza Kiran, cleaning and preprocessing
-- Person B: Fatima Kashif, features, EDA and write up
+- Person A: Aneeza Kiran, cleaning, preprocessing, models and explanation
+- Person B: Fatima Kashif, features, EDA, baselines, the pre-commit hook and write up
