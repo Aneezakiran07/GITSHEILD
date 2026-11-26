@@ -12,6 +12,11 @@ Rules: update only your own section. Status is one of Not started, In progress o
 - [x] Cleaned dataset or a script that makes it. Owner: A. Status: Done
 - [x] notebooks/03_preprocessing: split by repository, log transform and scaling fitted on train. Owner: A. Status: Done
 - [x] notebooks/01_cleaning and notebooks/03_preprocessing run from top to bottom. Owner: A. Status: Done
+- [x] Phase 2: agree the model file format and the hook value rule with B. Proposed by A on 2026-11-20 in docs/DECISIONS.md and confirmed by B. Owner: A. Status: Done
+- [x] Phase 2: install xgboost and shap and add them to requirements.txt. Owner: A. Status: Done
+- [x] Phase 2: share credata_clean.csv, repo_split.csv and scaler_params.csv with B privately. Owner: A. Status: Done
+- [x] Phase 2: notebooks/04_models. Folds, three models, model choice, threshold, saved model files and test scores. Owner: A. Status: Done
+- [x] Phase 2: notebooks/05_explain. SHAP summary, single rows, error analysis by F and X, file type, path and repository, and comparison with the baselines. Owner: A. Status: Done
 
 ## Person B
 
@@ -20,6 +25,10 @@ Rules: update only your own section. Status is one of Not started, In progress o
 - [x] images with a short note on what each tells us. Owner: B. Status: Done
 - [x] INSIGHTS: written insights. Owner: B. Status: Done
 - [x] README.md: title, description, problem statement, dataset details, cleaning summary, key findings, how to run. Owner: B. Status: Done
+- [x] Phase 2: notebooks/06_baselines with regex and CredSweeper baselines, a comparison table and the hook scored on the test lines. Owner: B. Status: Done
+- [x] Phase 2: src/hook.py pre-commit hook using the saved model, tested on a demo commit. Owner: B. Status: Done
+- [x] Phase 2: confirm the model file format and the hook value rule. Owner: B. Status: Done
+- [x] Phase 2: README and INSIGHTS Phase 2 sections, with the results table, the hook install guide and insights 10 to 19. Owner: B. Status: Done
 
 ## Shared
 
