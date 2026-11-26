@@ -6,7 +6,7 @@ Telling real leaked credentials apart from false alarms in source code.
 
 Secret scanners find passwords, API keys and tokens in code by matching keywords and patterns. Most of what they flag is not a real secret: placeholders, test values, example strings or random text that only looks like a key. Too many false alarms make developers ignore the scanner. This project uses the context around each candidate (the variable name, the file type, the path and the shape of the value) to predict whether a flagged line holds a real credential.
 
-Phase 1 covers cleaning, exploratory data analysis and preprocessing. Phase 2 trains and explains a model.
+Phase 1 covers cleaning, exploratory data analysis and preprocessing. Phase 2 trains, evaluates and explains the models, compares them with existing scanners, and ships the best one as a pre-commit hook and as a [website](#website) where anyone can check a line of code or a whole file.
 
 ## Dataset
 
@@ -108,13 +108,30 @@ All scores are on the 13,235 test rows from 67 repositories that were never used
 - **Through the hook, F1 drops from 0.8912 to 0.7037.** The hook cannot see the annotated value, so it finds the value with a simple rule. The rule finds exactly the annotated value on 49.93 percent of the 6,104 single line test rows that have one, and on 24.68 percent of all 13,086 single line test rows. The model then misses 677 more real secrets, mostly in config (307) and code (280) files, and raises 578 more false alarms on F rows. It is still well above the regex scanner and CredSweeper's rules.
 - The line and path models need no value but flag over 40 percent of F rows, so they are not usable on their own.
 
-### What the model relies on
+The confusion matrices show the trade between the two best models. The hook model misses 219 real secrets and raises 479 false alarms, while the random forest misses 393 and raises 317. A missed secret ends up in the repository history, so the model that misses fewer is the better scanner.
 
-From `notebooks/05_explain.ipynb` with SHAP on all test rows. The value features dominate: `value_entropy` alone holds 29.88 percent of the total SHAP importance, and the five largest features hold 60.35 percent, four of them describing the value. The full write up is in `INSIGHTS.md`.
+![Confusion matrices of the three models](images/13_confusion_matrices.png)
+
+The precision recall curves of XGBoost and the random forest almost overlap, and XGBoost stays slightly higher at the high recall end where the hook works. The dots mark the thresholds chosen from the cross validation scores.
+
+![Precision and recall curves on the test rows](images/14_precision_recall.png)
+
+### What the model relies on and where it fails
+
+From `notebooks/05_explain.ipynb` with SHAP on all test rows. The value features dominate: `value_entropy` alone holds 29.88 percent of the total SHAP importance, and the five largest features hold 60.35 percent, four of them describing the value. More entropy, digits and length push toward a real secret, more symbols push away, and a test path pushes toward a real secret because test folders hold many real secrets in CredData.
+
+![SHAP summary of the hook model](images/15_shap_summary.png)
+
+- **False alarms on X rows look like test passwords.** They have short values (median 8 characters), have password in the variable name 64.36 percent of the time against 20.32 percent for real secrets, and are pushed over the threshold mostly by values made of lower case letters.
+- **Test paths raise false alarms but not misses.** The false alarm rate is 6.74 percent in test paths against 2.49 percent in paths without test, example, mock or doc words, while recall stays between 0.919 and 0.945 in every path group.
+- **Errors are concentrated in a few repositories.** The 219 missed secrets come from 28 of the 67 test repositories, and one repository alone holds 74 of them.
+- **The model and the rule scanners complement each other.** CredSweeper's rules find 218 of the model's 219 missed secrets, and no real secret in the test set is missed by the model, the regex scanner and the rules together, while the model avoids 3,631 of the rules' 3,869 false alarms.
+
+The full write up is in `INSIGHTS.md`.
 
 ## The pre-commit hook
 
-`src/hook.py` scans the lines added in a commit and blocks the commit when one of them looks like a real secret. It builds the same 38 features as training with `src/features.py`, applies the saved log transform and scaling from `data/processed/scaler_params.csv`, and scores each line with `models/gitguard_model.joblib`.
+`src/hook.py` scans the lines added in a commit and blocks the commit when one of them looks like a real secret. It builds the same 38 features as training with `src/features.py`, applies the saved log transform and scaling from `models/scaler_params.csv`, and scores each line with `models/gitguard_model.joblib`.
 
 To match training, it
 
@@ -125,7 +142,7 @@ To match training, it
 
 ### Install
 
-The hook needs the model file `models/gitguard_model.joblib` and `data/processed/scaler_params.csv`, which stay out of git and are shared by the team. Then, inside the repository you want to protect:
+The hook needs the model file `models/gitguard_model.joblib` and the scaler `models/scaler_params.csv`. Both are in the repository (the model is about 1 MB), so no data is needed. Install the packages from `requirements.txt`, then, inside the repository you want to protect:
 
 ```bash
 python path/to/GITSHEILD/src/hook.py --install
@@ -148,22 +165,61 @@ The value is masked in the output. A commit of normal code goes through without 
 python src/hook.py --scan some_file.py
 ```
 
+## Website
+
+`app/app.py` is a Streamlit website built on the same model and the same code as the hook, so it gives exactly the hook's scores.
+
+- **Check a line:** paste a line of code and its file path, or pick one of the examples. The site shows the score, the threshold, whether the line looks like a real secret, and the six features that pushed the score most, from SHAP.
+- **Scan a file:** upload a source or config file. The site scores every line, joins private key blocks as the hook does, and lists the lines that look like real secrets with their values masked.
+
+**Live website:** not deployed yet. Run it locally as below.
+
+Run it locally from the repository root:
+
+```bash
+pip install -r app/requirements.txt
+streamlit run app/app.py
+```
+
+Then open http://localhost:8501. The model and scaler files ship with the repository, so the website runs without the dataset or the notebooks.
+
+## Conclusion
+
+GitShield shows that the context around a flagged line is enough to tell most real credentials from false alarms, even though CredData replaced every secret with a random look alike. Trained on 268 repositories and tested once on 67 others, the XGBoost model finds 92.88 percent of real secrets with 85.65 percent precision (F1 0.891), against 0.369 for a regex scanner and 0.611 for CredSweeper's rules. In practice this means a developer would see far fewer false alarms than with a keyword scanner: on the test repositories the model raises 479 false alarms where the regex scanner raises 5,162, while still catching more than nine in ten real secrets.
+
+The model learned what `02_eda` suggested: a real secret looks random, long and rich in digits, and its surroundings matter less. Dropping the empty value marker, which we feared was a labeling leak, does not change XGBoost's scores, but the value length still carries the same information, so the honest test is the hook, which has to find the value itself.
+
+As a real tool, through the pre-commit hook and the website, the model is weaker (F1 0.704), because it has to find the value itself instead of reading the annotation. It still beats both fair baselines. The clearest next step is a better value rule. A second step is to combine the model with a rule scanner: CredSweeper's rules find 218 of the model's 219 missed secrets, and the model avoids most of the rules' false alarms.
+
+## Limitations and improvements
+
+- **Value finding in the hook.** The hook's rule finds exactly the annotated value on only 49.93 percent of single line test rows that have one, and the model loses 677 real secrets this way, mostly in config and code files. A rule per file type, or a small model that learns where the value is, would close much of the gap between F1 0.891 and 0.704.
+- **Test passwords.** 13.71 percent of X rows are flagged. They look like real passwords to the model: short values named like a password, often in test paths. More features about the value itself, such as dictionary words or common test values, could separate them.
+- **Few repositories decide much of the error.** Scores vary a lot between repositories (cross validation average precision 0.907 with a standard deviation of 0.033, test 0.947). The test set of 67 repositories is probably easier than average, so the cross validation number is the safer estimate.
+- **One dataset.** CredData's secrets are random look alikes and its candidates were found by keyword scanners, so the model may behave differently on real code with other kinds of candidates.
+- **No fair strong baseline.** CredSweeper's ML filter scores 0.982 but has most likely been trained on CredData, so it could not be compared fairly.
+- **Combining scanners.** Flagging a line only when both CredSweeper's rules and the model flag it would cut the model's false alarms from 479 to 238, at the cost of 20 more missed secrets. Flagging a line when either flags it would miss only 1 secret but keep most of the rules' false alarms. We measured these overlaps but did not build a combined scanner.
+
 ## Repository layout
 
-| Path | Contents | Owner |
-| --- | --- | --- |
-| `src/extract_lines.py` | Builds the raw extract from a CredData download | A |
-| `notebooks/01_cleaning.ipynb` | Cleaning and the cleaned file | A |
-| `src/features.py` | `load_data` and `build_features` | B |
-| `notebooks/02_eda.ipynb` | Exploratory data analysis | B |
-| `notebooks/03_preprocessing.ipynb` | Split by repository, log transform and scaling fitted on train | A |
-| `notebooks/04_models.ipynb` | Grouped cross validation, three models, thresholds, saved models and test scores | A |
-| `notebooks/05_explain.ipynb` | SHAP and error analysis | A |
-| `notebooks/06_baselines.ipynb` | Regex and CredSweeper baselines, the comparison table and the hook on the test lines | B |
-| `src/hook.py` | The pre-commit hook | B |
-| `images` | Charts from 02_eda and 06_baselines, with notes in `images/NOTES.md` | B |
-| `INSIGHTS.md` | Written findings | B |
-| `docs` | Facts, decisions, progress, the cleaned data format and the Phase 2 plan | Both |
+| Part | Path | Contents | Owner |
+| --- | --- | --- | --- |
+| Phase 1 | `src/extract_lines.py` | Builds the raw extract from a CredData download | A |
+| Phase 1 | `notebooks/01_cleaning.ipynb` | Cleaning and the cleaned file | A |
+| Phase 1 | `src/features.py` | `load_data` and `build_features`, also used by the hook and the website | B |
+| Phase 1 | `notebooks/02_eda.ipynb` | Exploratory data analysis | B |
+| Phase 1 | `notebooks/03_preprocessing.ipynb` | Split by repository, log transform and scaling fitted on train | A |
+| Phase 2 | `notebooks/04_models.ipynb` | Grouped cross validation, three models, thresholds, confusion matrices, saved models and test scores | A |
+| Phase 2 | `notebooks/05_explain.ipynb` | SHAP, error analysis and comparison of errors with the baselines | A |
+| Phase 2 | `notebooks/06_baselines.ipynb` | Regex and CredSweeper baselines, the comparison table and the hook on the test lines | B |
+| Phase 2 | `models` | The hook model `gitguard_model.joblib` (about 1 MB) and its scaler `scaler_params.csv` | A |
+| Phase 2 | `src/hook.py` | The pre-commit hook | B |
+| Website | `app/app.py`, `app/requirements.txt` | The Streamlit website and its packages | A |
+| Both | `images` | Charts 01 to 11 from 02_eda, 12 from 06_baselines, 13 and 14 from 04_models, 15 from 05_explain, with notes in `images/NOTES.md` | Both |
+| Both | `INSIGHTS.md` | Written findings | B |
+| Both | `docs` | Facts, decisions, progress, the cleaned data format and the Phase 2 plan | Both |
+
+The notebooks are numbered in the order they run, so 01 to 03 are Phase 1 and 04 to 06 are Phase 2. They share one folder because each one reads the files the one before it writes, with paths relative to `notebooks`.
 
 ## How to run
 
@@ -202,7 +258,13 @@ jupyter nbconvert --to notebook --execute --inplace 05_explain.ipynb
 jupyter nbconvert --to notebook --execute --inplace 06_baselines.ipynb
 ```
 
+5. Start the website from the repository root. This step needs only step 1, because the model and scaler files are in the repository.
+
+```bash
+streamlit run app/app.py
+```
+
 ## Team
 
-- Person A: Aneeza Kiran, cleaning, preprocessing, models and explanation
+- Person A: Aneeza Kiran, cleaning, preprocessing, models, explanation and the website
 - Person B: Fatima Kashif, features, EDA, baselines, the pre-commit hook and write up
